@@ -1,28 +1,31 @@
 const electron = require('electron');
 const mpeg = require('fluent-ffmpeg');
 // electron will automatically create app object
-const { app, BrowserWindow , ipcMain} = electron;
+const { app, BrowserWindow , ipcMain, Menu} = electron;
 
 // event based programming
+let mainWindow;
 app.on('ready',()=>{
 
-    const mainWindow = new BrowserWindow({webPreferences: {
+     mainWindow = new BrowserWindow({webPreferences: {
         nodeIntegration: true
       }});
-    mainWindow.loadURL(`file://${__dirname}/index.html`);
+    mainWindow.loadURL(`file://${__dirname}/main.html`);
     console.log('App is now ready');
+
+    const mainMenu = Menu.buildFromTemplate(menuTemplate);
+      Menu.setApplicationMenu(mainMenu);
 });
 
-ipcMain.on('video:submit',(event,path)=>{
+const menuTemplate = [
+    
+    {
+        label:'File',
 
-    // ffprobe reads video file details
-    mpeg.ffprobe(path, (err,metadata)=>{
 
-        console.log(path);
-        console.log('Video duration is ', metadata);
-    });
+    }
 
-});
+]
 
 /*
 
